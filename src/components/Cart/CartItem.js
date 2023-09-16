@@ -1,35 +1,31 @@
 import classes from './CartItem.module.css';
 import { useDispatch } from 'react-redux';
-import { cartActions } from '../../store/Cart';
+import { cartActions } from '../../store/Cart-slice';
 const CartItem = (props) => {
-
+  const { title, quantity, total, price ,id} = props.item;
   const dispatch=useDispatch();
-  const { title, quantity, total, price,itemid } = props.item;
-  console.log({ title, quantity, total, price,itemid });
-  const addbtn = (data) =>{
-    dispatch(cartActions.additem(data));
-
-  } ;
-  const removebtn = (data) =>{
+  const addhandler = (data) => {
+    dispatch(cartActions.addtoitems(data))
+  };
+  const removehandler = (data) => {
     dispatch(cartActions.removeitem(data));
-  } 
-  const id=itemid;
+  }
   return (
-    <li className={classes.item} key={itemid}>
+    <li className={classes.item} key={id}>
       <header>
-        <h3>{props.item.title}</h3>
+        <h3>{title}</h3>
         <div className={classes.price}>
-          ${parseFloat(props.item.total).toFixed(2)}
-          <span className={classes.itemprice}>(${parseFloat(props.item.price).toFixed(2)}/item)</span>
+          ${parseFloat(total).toFixed(2)}{' '}
+          <span className={classes.itemprice}>(${parseFloat(price).toFixed(2)}/item)</span>
         </div>
       </header>
       <div className={classes.details}>
         <div className={classes.quantity}>
-          x <span>{props.item.quantity}</span>
+          x <span>{quantity}</span>
         </div>
         <div className={classes.actions}>
-          <button onClick={(event)=>{removebtn({title, quantity, total, price,id })}}>-</button>
-          <button onClick={(event)=>{addbtn({title, quantity, total, price,id })}}>+</button>
+          <button onClick={()=>{removehandler({title:title,quantity:quantity,price:price,total:total,id:id})}}>-</button>
+          <button onClick={()=>{addhandler({title:title,quantity:quantity,price:price,total:total,id:id})}}>+</button>
         </div>
       </div>
     </li>
